@@ -3,14 +3,8 @@ import json
 import os.path
 from fastapi import APIRouter, Request, Response, HTTPException, Body
 from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse, RedirectResponse
 from bson import datetime
-from typing import List
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED
-from pydantic.types import Json
-import base64
-import httplib2
-from bs4 import BeautifulSoup   
 from ..models.RecordModel import Record
 # If modifying these scopes, delete the file token.json.
 router = APIRouter(
