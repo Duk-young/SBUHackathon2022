@@ -30,6 +30,7 @@ async def get_list_of_records(request: Request, userID: int = -1):
 async def get_record(request: Request, recordID: int = -1):
     record = await request.app.mongodb["record"].find_one({"recordID":recordID},{"_id":0})
     if record:
+        record["createdAt"] = (record["createdAt"]).astimezone().strftime("%Y-%m-%d %H:%M:%S")
         return record
     return None
 

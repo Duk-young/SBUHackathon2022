@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED
 from ..models.StationModel import Station
 from datetime import datetime, timedelta
+import random
 # If modifying these scopes, delete the file token.json.
 router = APIRouter(
     prefix="/station",
@@ -16,6 +17,21 @@ router = APIRouter(
         403: {"description": "Operation forbidden"},
     },
 )
+
+@router.get("/populate")
+async def populate_station(request : Request, num: int = 10):
+    for i in range(num):
+        newStationID = await request.app.mongodb["index"].find_one_and_update(
+            {"_id": "station"}, {"$inc": {"index": 1}}, {"_id": 0}
+            )
+        newStationID = newStationID["index"]
+        newStation = {
+            "stationID":newStationID,
+            "stationName": "testStation"+str(newStationID),
+            "lat": round(random.uniform(0, 100), 2),
+            "long": round(random.uniform(0, 100), 2)
+        }
+        await request.app.mongodb["station"].insert_one(newStation)
 
 @router.get("/list")
 async def get_list_of_stations(request: Request):
@@ -47,3 +63,5 @@ async def create_station(request: Request, station: Station = Body(...)):
     if checkStation:
         return True
     return False
+
+            
