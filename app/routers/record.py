@@ -18,7 +18,7 @@ router = APIRouter(
 
 @router.get("/list") #
 async def get_list_of_records(request: Request, userID: int = -1):
-    records = request.app.mongodb["record"].find({"userID":userID},{"_id":0, "recordID":1, "userID":1,"stationID":1, "distance":1, "weight":1, "duration":1})
+    records = request.app.mongodb["record"].find({"userID":userID},{"_id":0, "recordID":1, "userID":1,"stationID":1, "distance":1, "weight":1, "duration":1,"createdAt":1})
     records = await records.to_list(None)
     for record in records:
         record["createdAt"] = (record["createdAt"]).astimezone().strftime("%Y-%m-%d %H:%M:%S")
@@ -28,7 +28,7 @@ async def get_list_of_records(request: Request, userID: int = -1):
 
 @router.get("/{recordID}") #
 async def get_record(request: Request, recordID: int = -1):
-    record = await request.app.mongodb["record"].find_one({"recordID":recordID},{"_id":0, "recordID":1, "userID":1,"stationID":1, "distance":1, "weight":1, "duration":1, "checkPoints":1})
+    record = await request.app.mongodb["record"].find_one({"recordID":recordID},{"_id":0, "recordID":1, "userID":1,"stationID":1, "distance":1, "weight":1, "duration":1, "checkPoints":1, "createdAt":1})
     if record:
         record["createdAt"] = (record["createdAt"]).astimezone().strftime("%Y-%m-%d %H:%M:%S")
         return record
