@@ -9,4 +9,8 @@ class Record(BaseModel):
     stationID: int = Field(...)
     # createdAt: datetime = Field(datetime.isoformat(datetime.now()))
     distance: float = Field(...)
-    weight: float = Field(...)
+    checkPoints : str = Field(...)
+    weight: float = Field(0)
+    duration: str = Field(...)
+    
+    
