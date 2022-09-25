@@ -44,7 +44,7 @@ async def get_list_of_stations(request: Request):
 @router.get("/{stationID}") #
 async def get_station(request: Request, stationID: int = -1, hours : int = 12):
     station = await request.app.mongodb["station"].find_one({"stationID":stationID},{"_id":0})
-    visitors = request.app.mongodb["record"].find({"createdAt":{"$gt":(datetime.now() - timedelta(hours=hours))}},{"_id":0})
+    visitors = request.app.mongodb["record"].find({"stationID":stationID, "createdAt":{"$gt":(datetime.now() - timedelta(hours=hours))}},{"_id":0})
     visitors = await visitors.to_list(None)
     station["visitors"] = len(visitors)
     if station:

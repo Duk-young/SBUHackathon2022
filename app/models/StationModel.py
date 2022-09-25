@@ -8,4 +8,4 @@ class Station(BaseModel):
     stationName: str = Field(...)
     lat: float = Field(...)
     long: float = Field(...)
-
+    address: str = Field("")
